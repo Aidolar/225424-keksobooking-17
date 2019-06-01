@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Никита Красовский](https://up.htmlacademy.ru/javascript/17/user/225424).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Шевяков] (https://htmlacademy.ru/profile/id574589).
 
 ---
 
