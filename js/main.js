@@ -8,7 +8,7 @@ var MAP_PIN_HEIGHT = 70;
 var MAIN_PIN_X = 570; // вот тут не 600 ли надо прописать?
 var MAIN_PIN_Y = 375;
 var MAIN_PIN_WIDTH = 65;
-var MAIN_PIN_HEIGHT = 87; // высота с учетом хвостика
+var MAIN_PIN_HEIGHT = 81; // высота с учетом хвостика
 var mapPin = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -98,3 +98,43 @@ var mainPinMouseupHandler = function () {
 };
 
 mainPin.addEventListener('mouseup', mainPinMouseupHandler);
+
+
+var housingType = document.querySelector('#type');
+var pricePerNight = document.querySelector('#price');
+var minPrice = {
+  BUNGALO: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+
+housingType.addEventListener('change', function () {
+  for (var i = 0; i < housingType.options.length; i++) {
+    var housingOption = housingType.options[i];
+    if (housingOption.selected) {
+      pricePerNight.min = minPrice[housingOption.value.toUpperCase()];
+      pricePerNight.placeholder = minPrice[housingOption.value.toUpperCase()];
+    }
+  }
+});
+
+timeIn.addEventListener('change', function () { // с помощью колбэков сделать единый эвент и использовать его для timeIn и timeOut.
+  for (var i = 0; i < timeIn.options.length; i++) {
+    var timeInOption = timeIn.options[i];
+    if (timeInOption.selected) {
+      timeOut.options[i].selected = true;
+    }
+  }
+});
+
+timeOut.addEventListener('change', function () {
+  for (var i = 0; i < timeOut.options.length; i++) {
+    var timeOutOption = timeOut.options[i];
+    if (timeOutOption.selected) {
+      timeIn.options[i].selected = true;
+    }
+  }
+});
