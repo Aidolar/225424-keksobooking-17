@@ -12,6 +12,17 @@ var MAIN_PIN_HEIGHT = 81; // высота с учетом хвостика
 var mapPin = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
+var housingType = document.querySelector('#type');
+var pricePerNight = document.querySelector('#price');
+var minPrice = {
+  BUNGALO: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+
 var fieldsets = document.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
 
@@ -99,17 +110,6 @@ var mainPinMouseupHandler = function () {
 
 mainPin.addEventListener('mouseup', mainPinMouseupHandler);
 
-
-var housingType = document.querySelector('#type');
-var pricePerNight = document.querySelector('#price');
-var minPrice = {
-  BUNGALO: 0,
-  FLAT: 1000,
-  HOUSE: 5000,
-  PALACE: 10000
-};
-var timeIn = document.querySelector('#timein');
-var timeOut = document.querySelector('#timeout');
 
 housingType.addEventListener('change', function () {
   for (var i = 0; i < housingType.options.length; i++) {
