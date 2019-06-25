@@ -23,6 +23,8 @@ var minPrice = {
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
 var adHeaderInput = document.querySelector('#title');
+var adForm = document.querySelector('.ad-form');
+var adFormSubmit = document.querySelector('.ad-form__submit');
 
 var fieldsets = document.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
@@ -170,4 +172,8 @@ pricePerNightInput.addEventListener('invalid', function () {
   } else {
     pricePerNightInput.setCustomValidity('');
   }
+});
+
+adFormSubmit.addEventListener('click', function () {
+  adForm.checkValidity();
 });
