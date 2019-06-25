@@ -8,9 +8,23 @@ var MAP_PIN_HEIGHT = 70;
 var MAIN_PIN_X = 570; // вот тут не 600 ли надо прописать?
 var MAIN_PIN_Y = 375;
 var MAIN_PIN_WIDTH = 65;
-var MAIN_PIN_HEIGHT = 87; // высота с учетом хвостика
+var MAIN_PIN_HEIGHT = 81; // высота с учетом хвостика
 var mapPin = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+var housingType = document.querySelector('#type');
+var pricePerNightInput = document.querySelector('#price');
+var minPrice = {
+  BUNGALO: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var adHeaderInput = document.querySelector('#title');
+var adForm = document.querySelector('.ad-form');
+var adFormSubmit = document.querySelector('.ad-form__submit');
 
 var fieldsets = document.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
@@ -98,3 +112,68 @@ var mainPinMouseupHandler = function () {
 };
 
 mainPin.addEventListener('mouseup', mainPinMouseupHandler);
+
+
+var setAttributesOnPricePerNightInput = function () {
+  for (var i = 0; i < housingType.options.length; i++) {
+    var housingOption = housingType.options[i];
+    if (housingOption.selected) {
+      pricePerNightInput.setAttribute('min', minPrice[housingOption.value.toUpperCase()]);
+      pricePerNightInput.placeholder = minPrice[housingOption.value.toUpperCase()];
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  setAttributesOnPricePerNightInput();
+});
+
+housingType.addEventListener('change', function () {
+  setAttributesOnPricePerNightInput();
+});
+
+timeIn.addEventListener('change', function () { // с помощью колбэков сделать единый эвент и использовать его для timeIn и timeOut.
+  for (var i = 0; i < timeIn.options.length; i++) {
+    var timeInOption = timeIn.options[i];
+    if (timeInOption.selected) {
+      timeOut.options[i].selected = true;
+    }
+  }
+});
+
+timeOut.addEventListener('change', function () {
+  for (var i = 0; i < timeOut.options.length; i++) {
+    var timeOutOption = timeOut.options[i];
+    if (timeOutOption.selected) {
+      timeIn.options[i].selected = true;
+    }
+  }
+});
+
+adHeaderInput.addEventListener('invalid', function () {
+  if (adHeaderInput.validity.tooShort) {
+    adHeaderInput.setCustomValidity('Заголовок объявления должен содержать минимум 30 символов');
+  } else if (adHeaderInput.validity.tooLong) {
+    adHeaderInput.setCustomValidity('Заголовок объявления должен содержать максимум 100 символов');
+  } else if (adHeaderInput.validity.valueMissing) {
+    adHeaderInput.setCustomValidity('Обязательное поле');
+  } else {
+    adHeaderInput.setCustomValidity('');
+  }
+});
+
+pricePerNightInput.addEventListener('invalid', function () {
+  if (pricePerNightInput.validity.valueMissing) {
+    pricePerNightInput.setCustomValidity('Обязательное поле');
+  } else if (pricePerNightInput.validity.rangeUnderflow) {
+    pricePerNightInput.setCustomValidity('Указанная цена ниже минимально допустимой');
+  } else if (pricePerNightInput.validity.rangeOverflow) {
+    pricePerNightInput.setCustomValidity('Указанная цена выше максимально допустимой');
+  } else {
+    pricePerNightInput.setCustomValidity('');
+  }
+});
+
+adFormSubmit.addEventListener('click', function () {
+  adForm.checkValidity();
+});
