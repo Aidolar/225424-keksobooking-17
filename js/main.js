@@ -13,7 +13,7 @@ var mapPin = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var housingType = document.querySelector('#type');
-var pricePerNight = document.querySelector('#price');
+var pricePerNightInput = document.querySelector('#price');
 var minPrice = {
   BUNGALO: 0,
   FLAT: 1000,
@@ -22,6 +22,7 @@ var minPrice = {
 };
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
+var adHeaderInput = document.querySelector('#title');
 
 var fieldsets = document.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
@@ -111,14 +112,22 @@ var mainPinMouseupHandler = function () {
 mainPin.addEventListener('mouseup', mainPinMouseupHandler);
 
 
-housingType.addEventListener('change', function () {
+var setAttributesOnPricePerNightInput = function () {
   for (var i = 0; i < housingType.options.length; i++) {
     var housingOption = housingType.options[i];
     if (housingOption.selected) {
-      pricePerNight.min = minPrice[housingOption.value.toUpperCase()];
-      pricePerNight.placeholder = minPrice[housingOption.value.toUpperCase()];
+      pricePerNightInput.setAttribute('min', minPrice[housingOption.value.toUpperCase()]);
+      pricePerNightInput.placeholder = minPrice[housingOption.value.toUpperCase()];
     }
   }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  setAttributesOnPricePerNightInput();
+});
+
+housingType.addEventListener('change', function () {
+  setAttributesOnPricePerNightInput();
 });
 
 timeIn.addEventListener('change', function () { // с помощью колбэков сделать единый эвент и использовать его для timeIn и timeOut.
@@ -136,5 +145,29 @@ timeOut.addEventListener('change', function () {
     if (timeOutOption.selected) {
       timeIn.options[i].selected = true;
     }
+  }
+});
+
+adHeaderInput.addEventListener('invalid', function () {
+  if (adHeaderInput.validity.tooShort) {
+    adHeaderInput.setCustomValidity('Заголовок объявления должен содержать минимум 30 символов');
+  } else if (adHeaderInput.validity.tooLong) {
+    adHeaderInput.setCustomValidity('Заголовок объявления должен содержать максимум 100 символов');
+  } else if (adHeaderInput.validity.valueMissing) {
+    adHeaderInput.setCustomValidity('Обязательное поле');
+  } else {
+    adHeaderInput.setCustomValidity('');
+  }
+});
+
+pricePerNightInput.addEventListener('invalid', function () {
+  if (pricePerNightInput.validity.valueMissing) {
+    pricePerNightInput.setCustomValidity('Обязательное поле');
+  } else if (pricePerNightInput.validity.rangeUnderflow) {
+    pricePerNightInput.setCustomValidity('Указанная цена ниже минимально допустимой');
+  } else if (pricePerNightInput.validity.rangeOverflow) {
+    pricePerNightInput.setCustomValidity('Указанная цена выше максимально допустимой');
+  } else {
+    pricePerNightInput.setCustomValidity('');
   }
 });
