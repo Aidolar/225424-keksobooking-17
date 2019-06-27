@@ -9,6 +9,9 @@ var MAIN_PIN_X = 570; // вот тут не 600 ли надо прописать
 var MAIN_PIN_Y = 375;
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 81; // высота с учетом хвостика
+var MIN_Y_COORD = 130;
+var MAX_Y_COORD = 630;
+var map = document.querySelector('.map');
 var mapPin = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -68,6 +71,8 @@ var insertPinsToPage = function (adsArray) {
   mapPin.appendChild(fragment);
 };
 
+// Начало задания "Подробности" (module4-task1) -активация страницы и заполнение поля адреса
+
 document.querySelector('#address').value = MAIN_PIN_X + ', ' + MAIN_PIN_Y;
 
 var blocksFieldsets = function () {
@@ -85,11 +90,13 @@ var unlocksFieldsets = function () {
 };
 
 var setActivePageMode = function () {
-  document.querySelector('.map').classList.remove('map--faded');
+  map.classList.remove('map--faded');
   insertPinsToPage(adsList);
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   unlocksFieldsets();
 };
+
+/* Старый код получения координат и записи их в адрес
 
 function getCoords(elem) {
   return {
@@ -111,8 +118,64 @@ var mainPinMouseupHandler = function () {
   setAddress();
 };
 
-mainPin.addEventListener('mouseup', mainPinMouseupHandler);
+mainPin.addEventListener('mouseup', mainPinMouseupHandler); */
 
+// Начало задания "Максимум подвижности" (module5-task1)
+
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  setActivePageMode(); // в ТЗ сказано, что активный режим активируетcя при первом перемещении, но если поставить setActivePageMode() на mousemove, то метка сильно тормозит
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var mainPinMouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var currentX = mainPin.offsetLeft - shift.x;
+    var currentY = mainPin.offsetTop - shift.y;
+
+    if (currentX + Math.floor(MAIN_PIN_WIDTH / 2) >= 0 && currentX + Math.floor(MAIN_PIN_WIDTH / 2) <= map.clientWidth) {
+      mainPin.style.left = currentX + 'px';
+    }
+
+    if (currentY + MAIN_PIN_HEIGHT >= MIN_Y_COORD && currentY + MAIN_PIN_HEIGHT <= MAX_Y_COORD) {
+      mainPin.style.top = currentY + 'px';
+    }
+
+    var mouseMoveCoordX = currentX + Math.floor(MAIN_PIN_WIDTH / 2);
+    var mouseMoveCoordY = currentY + MAIN_PIN_HEIGHT;
+    document.querySelector('#address').value = mouseMoveCoordX + ', ' + mouseMoveCoordY;
+  };
+
+  var mainPinMouseUpHandler = function () {
+    mainPin.style.left = mainPin.offsetLeft + 'px';
+    mainPin.style.top = mainPin.offsetTop + 'px';
+
+    var mouseUpCoordX = mainPin.offsetLeft + Math.floor(MAIN_PIN_WIDTH / 2);
+    var mouseUpCoordY = mainPin.offsetTop + MAIN_PIN_HEIGHT;
+    document.querySelector('#address').value = mouseUpCoordX + ', ' + mouseUpCoordY;
+    document.removeEventListener('mousemove', mainPinMouseMoveHandler);
+    document.removeEventListener('mouseup', mainPinMouseUpHandler);
+  };
+
+  document.addEventListener('mousemove', mainPinMouseMoveHandler);
+  document.addEventListener('mouseup', mainPinMouseUpHandler);
+});
+
+// Начало задания "Доверяй, но проверяй" (module4-task2) - валидация формы
 
 var setAttributesOnPricePerNightInput = function () {
   for (var i = 0; i < housingType.options.length; i++) {
