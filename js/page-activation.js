@@ -28,7 +28,7 @@
   window.pageActivation = {
     setActivePageMode: function () {
       window.data.map.classList.remove('map--faded');
-      window.pin.insertPinsToPage(window.data.adsList);
+      window.load(window.pin.loadSuccessHandler, window.pin.loadErrorHandler);
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       unlocksFieldsets();
     } // window для экспорта в main-pin-movement.js
