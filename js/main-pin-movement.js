@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MIN_Y_COORD = 130;
+  var MAX_Y_COORD = 630;
   var MAIN_PIN_WIDTH = 65; // локальная
   var MAIN_PIN_HEIGHT = 81; // локальная, высота с учетом хвостика
   var mainPin = document.querySelector('.map__pin--main'); // локальная
@@ -30,11 +32,11 @@
       var currentX = mainPin.offsetLeft - shift.x;
       var currentY = mainPin.offsetTop - shift.y;
 
-      if (currentX + Math.floor(MAIN_PIN_WIDTH / 2) >= 0 && currentX + Math.floor(MAIN_PIN_WIDTH / 2) <= window.data.map.clientWidth) {
+      if (currentX + Math.floor(MAIN_PIN_WIDTH / 2) >= 0 && currentX + Math.floor(MAIN_PIN_WIDTH / 2) <= window.pageActivation.map.clientWidth) {
         mainPin.style.left = currentX + 'px';
       }
 
-      if (currentY + MAIN_PIN_HEIGHT >= window.data.MIN_Y_COORD && currentY + MAIN_PIN_HEIGHT <= window.data.MAX_Y_COORD) {
+      if (currentY + MAIN_PIN_HEIGHT >= MIN_Y_COORD && currentY + MAIN_PIN_HEIGHT <= MAX_Y_COORD) {
         mainPin.style.top = currentY + 'px';
       }
 

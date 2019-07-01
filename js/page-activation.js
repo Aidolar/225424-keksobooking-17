@@ -4,6 +4,7 @@
   var MAIN_PIN_X = 570; // локальная
   var MAIN_PIN_Y = 375; // локальная
   var fieldsets = document.querySelectorAll('fieldset'); // локальная
+  var map = document.querySelector('.map'); // window для экспорта в main-pin-movement.js
 
   var setOriginalAddress = function () {
     document.querySelector('#address').value = MAIN_PIN_X + ', ' + MAIN_PIN_Y;
@@ -26,8 +27,9 @@
   }; // локальная
 
   window.pageActivation = {
+    map: map,
     setActivePageMode: function () {
-      window.data.map.classList.remove('map--faded');
+      map.classList.remove('map--faded');
       window.load(window.pin.loadSuccessHandler, window.pin.loadErrorHandler);
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       unlocksFieldsets();
