@@ -16,6 +16,9 @@
   var insertPinsToPage = function (data) {
     var takeNumber = data.length > 5 ? 5 : data.length;
     var fragment = document.createDocumentFragment();
+    document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (e) {
+      e.remove();
+    });
     for (var j = 0; j < takeNumber; j++) {
       fragment.appendChild(createSinglePin(data[j]));
     }
@@ -23,14 +26,18 @@
   }; // локальная
 
 
-  var housingTypeValue;
+  var housingTypeValue = 'any';
 
 
   var updatePins = function () {
-    var sameHousingTypePins = adsArray.filter(function (item) {
-      return item.offer.type === housingTypeValue;
-    });
-    insertPinsToPage(sameHousingTypePins);
+    if (housingTypeValue !== 'any') {
+      var sameHousingTypePins = adsArray.filter(function (item) {
+        return item.offer.type === housingTypeValue;
+      });
+      insertPinsToPage(sameHousingTypePins);
+    } else {
+      insertPinsToPage(adsArray);
+    }
   };
 
   var housingTypeSelect = document.querySelector('#housing-type');
@@ -40,12 +47,7 @@
 
 
   housingTypeSelect.addEventListener('change', function () {
-    for (var i = 0; i < housingTypeSelect.options.length; i++) {
-      var housingTypeSelectOption = housingTypeSelect.options[i];
-      if (housingTypeSelectOption.selected) {
-        housingTypeValue = housingTypeSelectOption.value;
-      }
-    }
+    housingTypeValue = housingTypeSelect.value;
     updatePins();
   });
 
