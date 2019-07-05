@@ -6,6 +6,8 @@
   var adsArray = [];
 
   var lastTimeout;
+  var LOWER_PRICE_LIMIT = 10000;
+  var UPPER_PRICE_LIMIT = 50000;
   var housingTypeSelect = document.querySelector('#housing-type');
   var housingPriceSelect = document.querySelector('#housing-price');
   var housingRoomsSelect = document.querySelector('#housing-rooms');
@@ -16,7 +18,6 @@
   var washerCheckbox = document.querySelector('#filter-washer');
   var elevatorCheckbox = document.querySelector('#filter-elevator');
   var conditionerCheckbox = document.querySelector('#filter-conditioner');
-
 
   var housingTypeFilter = {
     selectedOption: 'any',
@@ -36,15 +37,15 @@
       switch (housingPriceFilter.selectedOption) {
         case 'low':
           return arr.filter(function (item) {
-            return item.offer.price < 10000;
+            return item.offer.price < LOWER_PRICE_LIMIT;
           });
         case 'middle':
           return arr.filter(function (item) {
-            return item.offer.price >= 10000 && item.offer.price <= 50000;
+            return item.offer.price >= LOWER_PRICE_LIMIT && item.offer.price <= UPPER_PRICE_LIMIT;
           });
         case 'high':
           return arr.filter(function (item) {
-            return item.offer.price > 50000;
+            return item.offer.price > UPPER_PRICE_LIMIT;
           });
         default: return arr;
       }
@@ -80,7 +81,7 @@
     filter: function (arr) {
       if (wifiCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(wifiCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(wifiCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -92,7 +93,7 @@
     filter: function (arr) {
       if (dishwasherCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(dishwasherCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(dishwasherCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -104,7 +105,7 @@
     filter: function (arr) {
       if (parkingCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(parkingCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(parkingCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -116,7 +117,7 @@
     filter: function (arr) {
       if (washerCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(washerCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(washerCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -128,7 +129,7 @@
     filter: function (arr) {
       if (elevatorCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(elevatorCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(elevatorCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -140,7 +141,7 @@
     filter: function (arr) {
       if (conditionerCheckboxFilter.checkboxValue !== '') {
         return arr.filter(function (item) {
-          return item.offer.features.includes(conditionerCheckboxFilter.checkboxValue) === true;
+          return item.offer.features.includes(conditionerCheckboxFilter.checkboxValue);
         });
       }
       return arr;
@@ -214,63 +215,33 @@
   });
 
   wifiCheckbox.addEventListener('change', function () {
-    if (wifiCheckbox.checked) {
-      wifiCheckboxFilter.checkboxValue = wifiCheckbox.value;
-      updatePins();
-    } else {
-      wifiCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    wifiCheckboxFilter.checkboxValue = wifiCheckbox.checked ? wifiCheckbox.value : '';
+    updatePins();
   });
 
   dishwasherCheckbox.addEventListener('change', function () {
-    if (dishwasherCheckbox.checked) {
-      dishwasherCheckboxFilter.checkboxValue = dishwasherCheckbox.value;
-      updatePins();
-    } else {
-      dishwasherCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    dishwasherCheckboxFilter.checkboxValue = dishwasherCheckbox.checked ? dishwasherCheckbox.value : '';
+    updatePins();
   });
 
   parkingCheckbox.addEventListener('change', function () {
-    if (parkingCheckbox.checked) {
-      parkingCheckboxFilter.checkboxValue = parkingCheckbox.value;
-      updatePins();
-    } else {
-      parkingCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    parkingCheckboxFilter.checkboxValue = parkingCheckbox.checked ? parkingCheckbox.value : '';
+    updatePins();
   });
 
   washerCheckbox.addEventListener('change', function () {
-    if (washerCheckbox.checked) {
-      washerCheckboxFilter.checkboxValue = washerCheckbox.value;
-      updatePins();
-    } else {
-      washerCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    washerCheckboxFilter.checkboxValue = washerCheckbox.checked ? washerCheckbox.value : '';
+    updatePins();
   });
 
   elevatorCheckbox.addEventListener('change', function () {
-    if (elevatorCheckbox.checked) {
-      elevatorCheckboxFilter.checkboxValue = elevatorCheckbox.value;
-      updatePins();
-    } else {
-      elevatorCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    elevatorCheckboxFilter.checkboxValue = elevatorCheckbox.checked ? elevatorCheckbox.value : '';
+    updatePins();
   });
 
   conditionerCheckbox.addEventListener('change', function () {
-    if (conditionerCheckbox.checked) {
-      conditionerCheckboxFilter.checkboxValue = conditionerCheckbox.value;
-      updatePins();
-    } else {
-      conditionerCheckboxFilter.checkboxValue = '';
-      updatePins();
-    }
+    conditionerCheckboxFilter.checkboxValue = conditionerCheckbox.checked ? conditionerCheckbox.value : '';
+    updatePins();
   });
 
   window.pin = {
