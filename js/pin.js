@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var mapPin = document.querySelector('.map__pins'); // локальная
+  var mapPinsBlock = document.querySelector('.map__pins'); // window для экспорта в card.js
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // локальная
   var adsArray = [];
 
@@ -161,6 +161,19 @@
     conditionerCheckboxFilter
   ];
 
+  var insertCardClickHandler = function (data, i) {
+    document.querySelectorAll('.map__pin:not(.map__pin--main)')[i].addEventListener('click', function () {
+      if (document.querySelector('.popup')) {
+        document.querySelector('.popup').remove();
+      }
+      if (document.querySelector('.map__pin--active')) {
+        document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+      }
+      document.querySelectorAll('.map__pin:not(.map__pin--main)')[i].classList.add('map__pin--active');
+      window.card.insertCardToPage(data);
+    });
+  };
+
   var createSinglePin = function (adObject) {
     var pin = pinTemplate.cloneNode(true);
     pin.style = 'left:' + adObject.location.x + 'px; top:' + adObject.location.y + 'px;';
@@ -178,7 +191,10 @@
     for (var j = 0; j < takeNumber; j++) {
       fragment.appendChild(createSinglePin(data[j]));
     }
-    mapPin.appendChild(fragment);
+    mapPinsBlock.appendChild(fragment);
+    for (var k = 0; k < takeNumber; k++) {
+      insertCardClickHandler(data[k], k);
+    }
   }; // локальная
 
   var updatePins = function () {
@@ -192,6 +208,8 @@
     lastTimeout = window.setTimeout(function () {
       insertPinsToPage(filteredOffers);
     }, 500);
+
+
   };
 
   housingTypeSelect.addEventListener('change', function () {
@@ -245,10 +263,12 @@
   });
 
   window.pin = {
-
+    adsArray: adsArray,
+    mapPinsBlock: mapPinsBlock,
     loadSuccessHandler: function (data) {
       adsArray = data;
       updatePins();
+
     }, // window для экспорта в page-activation.js
 
     loadErrorHandler: function (errMessage) {
