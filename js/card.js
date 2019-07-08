@@ -2,6 +2,7 @@
 
 (function () {
   var cardTemplate = document.querySelector('#card').content.querySelector('.popup'); // локальная
+  var ESC_KEYCODE = 27;
 
   var getWordend = function (num, words) {
     if ((num % 100 > 10 && num % 100 < 15) || num % 10 > 4 || num % 10 === 0) {
@@ -118,11 +119,25 @@
     return card;
   }; // локальная
 
+  var buttonCloseClickHandler = function () {
+    document.querySelector('.popup').remove();
+  };
+
+  var escapeKeydownHandler = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      document.querySelector('.popup').remove();
+    }
+    document.removeEventListener('keydown', escapeKeydownHandler);
+  };
+
   window.card = {
     insertCardToPage: function (data) {
       var fragment = document.createDocumentFragment();
-      fragment.appendChild(createSingleCard(data[8]));
+      fragment.appendChild(createSingleCard(data));
       window.pageActivation.map.insertBefore(fragment, window.pageActivation.mapFiltersContainer);
+      var buttonClose = document.querySelector('.popup__close');
+      buttonClose.addEventListener('click', buttonCloseClickHandler);
+      document.addEventListener('keydown', escapeKeydownHandler);
     } // window для экспорта в pin.js
   };
 })();

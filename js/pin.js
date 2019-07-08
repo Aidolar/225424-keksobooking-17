@@ -161,8 +161,8 @@
     conditionerCheckboxFilter
   ];
 
-  var insertCardClickHandler = function (data, i) {
-    document.querySelectorAll('.map__pin:not(.map__pin--main)')[i].addEventListener('click', function () {
+  var insertPinClickHandler = function (data, i) {
+    var pinClickHandler = function () {
       if (document.querySelector('.popup')) {
         document.querySelector('.popup').remove();
       }
@@ -171,7 +171,8 @@
       }
       document.querySelectorAll('.map__pin:not(.map__pin--main)')[i].classList.add('map__pin--active');
       window.card.insertCardToPage(data);
-    });
+    };
+    document.querySelectorAll('.map__pin:not(.map__pin--main)')[i].addEventListener('click', pinClickHandler);
   };
 
   var createSinglePin = function (adObject) {
@@ -193,7 +194,7 @@
     }
     mapPinsBlock.appendChild(fragment);
     for (var k = 0; k < takeNumber; k++) {
-      insertCardClickHandler(data[k], k);
+      insertPinClickHandler(data[k], k);
     }
   }; // локальная
 
@@ -202,6 +203,9 @@
     filters.forEach(function (obj) {
       filteredOffers = obj.filter(filteredOffers);
     });
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
