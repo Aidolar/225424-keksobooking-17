@@ -121,13 +121,15 @@
 
   var buttonCloseClickHandler = function () {
     document.querySelector('.popup').remove();
+    document.querySelector('.map__pin--active').classList.remove('map__pin--active');
   };
 
   var escapeKeydownHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       document.querySelector('.popup').remove();
+      document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+      document.removeEventListener('keydown', escapeKeydownHandler);
     }
-    document.removeEventListener('keydown', escapeKeydownHandler);
   };
 
   window.card = {
