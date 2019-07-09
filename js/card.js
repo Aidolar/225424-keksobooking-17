@@ -9,7 +9,6 @@
     house: 'Дом',
     palace: 'Дворец'
   };
-
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   var getWordend = function (num, words) {
