@@ -3,6 +3,14 @@
 (function () {
   var cardTemplate = document.querySelector('#card').content.querySelector('.popup'); // локальная
   var ESC_KEYCODE = 27;
+  var housingNames = {
+    bungalo: 'Бунгало',
+    flat: 'Квартира',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
+  var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   var getWordend = function (num, words) {
     if ((num % 100 > 10 && num % 100 < 15) || num % 10 > 4 || num % 10 === 0) {
@@ -45,21 +53,7 @@
     }
 
     if (adObject.offer.type) {
-      switch (adObject.offer.type) {
-        case 'bungalo':
-          card.querySelector('.popup__type').textContent = 'Бунгало';
-          break;
-        case 'flat':
-          card.querySelector('.popup__type').textContent = 'Квартира';
-          break;
-        case 'house':
-          card.querySelector('.popup__type').textContent = 'Дом';
-          break;
-        case 'palace':
-          card.querySelector('.popup__type').textContent = 'Дворец';
-          break;
-        default: card.querySelector('.popup__type').classList.add('hidden');
-      }
+      card.querySelector('.popup__type').textContent = housingNames[adObject.offer.type];
     } else {
       card.querySelector('.popup__type').classList.add('hidden');
     }
@@ -76,27 +70,13 @@
       card.querySelector('.popup__text--time').classList.add('hidden');
     }
 
-
     if (!adObject.offer.features) {
       card.querySelector('.popup__features').remove();
     } else {
-      if (!adObject.offer.features.includes('wifi')) {
-        card.querySelector('.popup__feature--wifi').remove();
-      }
-      if (!adObject.offer.features.includes('dishwasher')) {
-        card.querySelector('.popup__feature--dishwasher').remove();
-      }
-      if (!adObject.offer.features.includes('parking')) {
-        card.querySelector('.popup__feature--parking').remove();
-      }
-      if (!adObject.offer.features.includes('washer')) {
-        card.querySelector('.popup__feature--washer').remove();
-      }
-      if (!adObject.offer.features.includes('elevator')) {
-        card.querySelector('.popup__feature--elevator').remove();
-      }
-      if (!adObject.offer.features.includes('conditioner')) {
-        card.querySelector('.popup__feature--conditioner').remove();
+      for (var i = 0; i < features.length; i++) {
+        if (!adObject.offer.features.includes(features[i])) {
+          card.querySelector('.popup__feature--' + features[i]).remove();
+        }
       }
     }
 
@@ -107,9 +87,9 @@
     }
 
     if (adObject.offer.photos) {
-      for (var i = 0; i < adObject.offer.photos.length; i++) {
+      for (var j = 0; j < adObject.offer.photos.length; j++) {
         var photo = card.querySelector('.popup__photo').cloneNode(true);
-        photo.src = adObject.offer.photos[i];
+        photo.src = adObject.offer.photos[j];
         card.querySelector('.popup__photos').appendChild(photo);
       }
       card.querySelector('.popup__photo').remove();
