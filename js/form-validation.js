@@ -14,6 +14,14 @@
   var adHeaderInput = document.querySelector('#title'); // локальная
   var adForm = document.querySelector('.ad-form'); // локальная
   var adFormSubmit = document.querySelector('.ad-form__submit'); // локальная
+  var roomNumber = document.querySelector('#room_number');
+  var capacity = document.querySelector('#capacity');
+  var RoomsAndGuests = {
+    1: [1],
+    2: [1, 2],
+    3: [1, 2, 3],
+    100: [0]
+  };
 
   var setAttributesOnPricePerNightInput = function () {
     for (var i = 0; i < housingType.options.length; i++) {
@@ -25,8 +33,35 @@
     }
   };
 
+  var disableСapacityOptions = function (value) {
+    var capacityOptions = capacity.querySelectorAll('option');
+    capacityOptions.forEach(function (it) {
+      it.disabled = true;
+    });
+    RoomsAndGuests[value].forEach(function (it) {
+      capacity.querySelector('option' + '[value="' + it + '"]').disabled = false;
+    });
+  };
+
+  var checkGuestsValidity = function () {
+    var roomGuests = RoomsAndGuests[roomNumber.value];
+    if (!roomGuests.includes(parseInt(capacity.value, 10))) {
+      capacity.setCustomValidity('Выбранного количества комнат не хватит для размещения всех гостей');
+    }
+  };
+
+  var roomNumberChangeHandler = function (evt) {
+    evt.target.setCustomValidity('');
+    disableСapacityOptions(roomNumber.value);
+  };
+
+  var capacityChangeHandler = function (evt) {
+    evt.target.setCustomValidity('');
+  };
+
   document.addEventListener('DOMContentLoaded', function () {
     setAttributesOnPricePerNightInput();
+    disableСapacityOptions(roomNumber.value);
   });
 
   housingType.addEventListener('change', function () {
@@ -50,6 +85,9 @@
       }
     }
   });
+
+  roomNumber.addEventListener('change', roomNumberChangeHandler);
+  capacity.addEventListener('change', capacityChangeHandler);
 
   adHeaderInput.addEventListener('invalid', function () {
     if (adHeaderInput.validity.tooShort) {
@@ -77,5 +115,6 @@
 
   adFormSubmit.addEventListener('click', function () {
     adForm.checkValidity();
+    checkGuestsValidity();
   });
 })();
