@@ -1,27 +1,29 @@
 'use strict';
 
 (function () {
-  var housingType = document.querySelector('#type'); // локальная
-  var pricePerNightInput = document.querySelector('#price'); // локальная
+  var housingType = document.querySelector('#type');
+  var pricePerNightInput = document.querySelector('#price');
   var minPrice = {
     BUNGALO: 0,
     FLAT: 1000,
     HOUSE: 5000,
     PALACE: 10000
   }; // локальная
-  var timeIn = document.querySelector('#timein'); // локальная
-  var timeOut = document.querySelector('#timeout'); // локальная
-  var adHeaderInput = document.querySelector('#title'); // локальная
-  var adForm = document.querySelector('.ad-form'); // локальная
-  var adFormSubmit = document.querySelector('.ad-form__submit'); // локальная
+  var timeIn = document.querySelector('#timein');
+  var timeOut = document.querySelector('#timeout');
+  var adHeaderInput = document.querySelector('#title');
+  var adForm = document.querySelector('.ad-form');
+  var adFormSubmit = document.querySelector('.ad-form__submit');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
+  var resetButton = adForm.querySelector('.ad-form__reset');
   var RoomsAndGuests = {
     1: [1],
     2: [1, 2],
     3: [1, 2, 3],
     100: [0]
   };
+  var main = document.querySelector('main');
 
   var setAttributesOnPricePerNightInput = function () {
     for (var i = 0; i < housingType.options.length; i++) {
@@ -58,6 +60,65 @@
   var capacityChangeHandler = function (evt) {
     evt.target.setCustomValidity('');
   };
+
+  var errorMessageClickHandler = function () {
+    document.querySelector('.error').remove();
+    document.removeEventListener('click', errorMessageClickHandler);
+    document.removeEventListener('keydown', errorMessageEscapeKeydownHandler);
+  };
+
+  var successMessageClickHandler = function () {
+    document.querySelector('.success').remove();
+    document.removeEventListener('click', successMessageClickHandler);
+    document.removeEventListener('keydown', successMessageEscapeKeydownHandler);
+    window.pageDeactivation.deactivatePage();
+  };
+
+  var errorMessageEscapeKeydownHandler = function (evt) {
+    if (evt.keyCode === window.card.ESC_KEYCODE) {
+      document.querySelector('.error').remove();
+      document.removeEventListener('click', errorMessageClickHandler);
+      document.removeEventListener('keydown', errorMessageEscapeKeydownHandler);
+    }
+  };
+
+  var successMessageEscapeKeydownHandler = function (evt) {
+    if (evt.keyCode === window.card.ESC_KEYCODE) {
+      document.querySelector('.success').remove();
+      document.removeEventListener('click', successMessageClickHandler);
+      document.removeEventListener('keydown', successMessageEscapeKeydownHandler);
+      window.pageDeactivation.deactivatePage();
+    }
+  };
+
+  var resetButtonClickHandler = function () {
+    window.pageDeactivation.deactivatePage();
+  };
+
+  var createSuccessMessage = function () {
+    var successTemplate = document.querySelector('#success')
+      .content
+      .querySelector('.success');
+    var successNode = successTemplate.cloneNode(true);
+    main.insertAdjacentElement('afterbegin', successNode);
+    document.addEventListener('click', successMessageClickHandler);
+    document.addEventListener('keydown', successMessageEscapeKeydownHandler);
+  };
+
+  var createErrorMessage = function (statusMessage) {
+    var errorTemplate = document.querySelector('#error')
+          .content
+          .querySelector('.error');
+    var errorNode = errorTemplate.cloneNode(true);
+    var errorText = errorNode.querySelector('.error__message');
+    errorText.textContent = statusMessage;
+    main.insertAdjacentElement('afterbegin', errorNode);
+    document.querySelector('.error').addEventListener('click', errorMessageClickHandler);
+    document.addEventListener('click', errorMessageClickHandler);
+    document.addEventListener('keydown', errorMessageEscapeKeydownHandler);
+  };
+
+  resetButton.addEventListener('click', resetButtonClickHandler);
 
   document.addEventListener('DOMContentLoaded', function () {
     setAttributesOnPricePerNightInput();
@@ -116,5 +177,19 @@
   adFormSubmit.addEventListener('click', function () {
     adForm.checkValidity();
     checkGuestsValidity();
+  });
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.requests.upload(createSuccessMessage, createErrorMessage, new FormData(adForm));
+
+    window.formValidation = {
+      housingType: housingType,
+      pricePerNightInput: pricePerNightInput,
+      timeIn: timeIn,
+      timeOut: timeOut,
+      roomNumber: roomNumber,
+      capacity: capacity
+    };
   });
 })();

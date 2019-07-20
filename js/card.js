@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var cardTemplate = document.querySelector('#card').content.querySelector('.popup'); // локальная
+  var cardTemplate = document.querySelector('#card').content.querySelector('.popup');
   var ESC_KEYCODE = 27;
   var housingNames = {
     bungalo: 'Бунгало',
@@ -112,6 +112,7 @@
   };
 
   window.card = {
+    ESC_KEYCODE: ESC_KEYCODE,
     insertCardToPage: function (data) {
       var fragment = document.createDocumentFragment();
       fragment.appendChild(createSingleCard(data));
@@ -119,6 +120,6 @@
       var buttonClose = document.querySelector('.popup__close');
       buttonClose.addEventListener('click', buttonCloseClickHandler);
       document.addEventListener('keydown', escapeKeydownHandler);
-    } // window для экспорта в pin.js
+    }
   };
 })();
