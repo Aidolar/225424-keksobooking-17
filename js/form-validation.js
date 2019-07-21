@@ -17,6 +17,8 @@
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var allInputs = adForm.querySelectorAll('input');
+  var allSelects = adForm.querySelectorAll('select');
   var RoomsAndGuests = {
     1: [1],
     2: [1, 2],
@@ -177,19 +179,36 @@
   adFormSubmit.addEventListener('click', function () {
     adForm.checkValidity();
     checkGuestsValidity();
+
+    allInputs.forEach(function (item) {
+      item.style = '';
+      if (item.type !== 'checkbox' && item.checkValidity() === false) {
+        item.style = 'outline: 2px solid red;';
+      }
+    });
+
+    allSelects.forEach(function (item) {
+      item.style = '';
+      if (item.checkValidity() === false) {
+        item.style = 'outline: 2px solid red;';
+      }
+    });
   });
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.requests.upload(createSuccessMessage, createErrorMessage, new FormData(adForm));
-
-    window.formValidation = {
-      housingType: housingType,
-      pricePerNightInput: pricePerNightInput,
-      timeIn: timeIn,
-      timeOut: timeOut,
-      roomNumber: roomNumber,
-      capacity: capacity
-    };
   });
+
+  window.formValidation = {
+    adForm: adForm,
+    housingType: housingType,
+    pricePerNightInput: pricePerNightInput,
+    timeIn: timeIn,
+    timeOut: timeOut,
+    roomNumber: roomNumber,
+    capacity: capacity,
+    allInputs: allInputs,
+    allSelects: allSelects
+  };
 })();

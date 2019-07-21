@@ -277,7 +277,6 @@
     loadSuccessHandler: function (data) {
       adsArray = data;
       updatePins();
-
     },
 
     loadErrorHandler: function (errMessage) {

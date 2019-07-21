@@ -1,44 +1,39 @@
 'use strict';
 
 (function () {
-  var allInputs = document.querySelectorAll('input');
   var textarea = document.querySelector('#description');
 
-  var housingType = document.querySelector('#type');
-  var pricePerNightInput = document.querySelector('#price');
-  var timeIn = document.querySelector('#timein');
-  var timeOut = document.querySelector('#timeout');
-  var roomNumber = document.querySelector('#room_number');
-  var capacity = document.querySelector('#capacity');
-  var housingTypeSelect = document.querySelector('#housing-type');
-  var housingPriceSelect = document.querySelector('#housing-price');
-  var housingRoomsSelect = document.querySelector('#housing-rooms');
-  var housingGuestsSelect = document.querySelector('#housing-guests');
 
   var deactivatePage = function () {
 
     window.pageActivation.blocksForms();
 
-    // очищает текстовые инпуты и чекбоксы
-    allInputs.forEach(function (item) {
+    // очищает текстовые инпуты и чекбоксы и убирает красные рамки
+    window.formValidation.allInputs.forEach(function (item) {
       if (item.type !== 'checkbox') {
         item.value = '';
+        item.style = '';
       } else if ((item.type === 'checkbox') && (item.checked)) {
         item.checked = false;
       }
     });
 
     // возвращает селекты в начальное состояние
-    housingType.selectedIndex = '1';
-    pricePerNightInput.placeholder = '1000';
-    timeIn.selectedIndex = '0';
-    timeOut.selectedIndex = '0';
-    roomNumber.selectedIndex = '0';
-    capacity.selectedIndex = '0';
-    housingTypeSelect.selectedIndex = '0';
-    housingPriceSelect.selectedIndex = '0';
-    housingRoomsSelect.selectedIndex = '0';
-    housingGuestsSelect.selectedIndex = '0';
+    window.formValidation.housingType.selectedIndex = '1';
+    window.formValidation.pricePerNightInput.placeholder = '1000';
+    window.formValidation.timeIn.selectedIndex = '0';
+    window.formValidation.timeOut.selectedIndex = '0';
+    window.formValidation.roomNumber.selectedIndex = '0';
+    window.formValidation.capacity.selectedIndex = '0';
+    window.pin.housingTypeSelect.selectedIndex = '0';
+    window.pin.housingPriceSelect.selectedIndex = '0';
+    window.pin.housingRoomsSelect.selectedIndex = '0';
+    window.pin.housingGuestsSelect.selectedIndex = '0';
+
+    // убирает красные рамки у селектов
+    window.formValidation.allSelects.forEach(function (item) {
+      item.style = '';
+    });
 
     // приводит объекты-фильтры в начальное состояние
     window.pin.filters.forEach(function (item) {
@@ -65,8 +60,8 @@
     });
 
     // возвращает затемнение карты и формы
-    document.querySelector('.map').classList.add('map--faded');
-    document.querySelector('.ad-form').classList.add('ad-form--disabled');
+    window.pageActivation.map.classList.add('map--faded');
+    window.formValidation.adForm.classList.add('ad-form--disabled');
 
     // возвращает главную метку в исходное положение и прописывает адрес в поле адреса
     window.mainPinMovement.mainPin.style.left = window.pageActivation.MAIN_PIN_X + 'px';
