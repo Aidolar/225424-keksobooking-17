@@ -3,9 +3,10 @@
 (function () {
   var MIN_Y_COORD = 130;
   var MAX_Y_COORD = 630;
-  var MAIN_PIN_WIDTH = 65; // локальная
-  var MAIN_PIN_HEIGHT = 81; // локальная, высота с учетом хвостика
-  var mainPin = document.querySelector('.map__pin--main'); // локальная
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 81;
+  var ENTER_KEYCODE = 13;
+  var mainPin = document.querySelector('.map__pin--main');
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -59,4 +60,17 @@
     document.addEventListener('mousemove', mainPinMouseMoveHandler);
     document.addEventListener('mouseup', mainPinMouseUpHandler);
   });
+
+  var enterKeydownHandler = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      window.pageActivation.setActivePageMode();
+      document.removeEventListener('keydown', enterKeydownHandler);
+    }
+  };
+
+  mainPin.addEventListener('keydown', enterKeydownHandler);
+
+  window.mainPinMovement = {
+    mainPin: mainPin
+  };
 })();

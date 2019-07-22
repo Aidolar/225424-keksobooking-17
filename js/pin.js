@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var mapPinsBlock = document.querySelector('.map__pins'); // window для экспорта в card.js
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // локальная
+  var mapPinsBlock = document.querySelector('.map__pins');
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var adsArray = [];
 
   var lastTimeout;
@@ -268,23 +268,27 @@
 
   window.pin = {
     adsArray: adsArray,
+    housingTypeSelect: housingTypeSelect,
+    housingPriceSelect: housingPriceSelect,
+    housingRoomsSelect: housingRoomsSelect,
+    housingGuestsSelect: housingGuestsSelect,
+    filters: filters,
     mapPinsBlock: mapPinsBlock,
     loadSuccessHandler: function (data) {
       adsArray = data;
       updatePins();
-
-    }, // window для экспорта в page-activation.js
+    },
 
     loadErrorHandler: function (errMessage) {
       var errElement = document.createElement('div');
       errElement.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: yellow;';
       errElement.style.position = 'absolute';
-      errElement.style.width = window.data.map.clientWidth + 'px';
+      errElement.style.width = window.pageActivation.map.clientWidth + 'px';
       errElement.style.left = 0;
       errElement.style.right = 0;
       errElement.style.fontSize = '30px';
       errElement.textContent = errMessage;
       document.body.insertAdjacentElement('afterbegin', errElement);
-    } // window для экспорта в page-activation.js
+    }
   };
 })();
