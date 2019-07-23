@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
+  var LOWER_PRICE_LIMIT = 10000;
+  var UPPER_PRICE_LIMIT = 50000;
+  var PIN_TIMEOUT = 500;
+  var MAX_PINS_QUANTITY = 5;
   var mapPinsBlock = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var adsArray = [];
-
   var lastTimeout;
-  var LOWER_PRICE_LIMIT = 10000;
-  var UPPER_PRICE_LIMIT = 50000;
   var housingTypeSelect = document.querySelector('#housing-type');
   var housingPriceSelect = document.querySelector('#housing-price');
   var housingRoomsSelect = document.querySelector('#housing-rooms');
@@ -184,7 +185,7 @@
   }; // локальная
 
   var insertPinsToPage = function (data) {
-    var takeNumber = data.length > 5 ? 5 : data.length;
+    var takeNumber = data.length > MAX_PINS_QUANTITY ? MAX_PINS_QUANTITY : data.length;
     var fragment = document.createDocumentFragment();
     document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (e) {
       e.remove();
@@ -211,7 +212,7 @@
     }
     lastTimeout = window.setTimeout(function () {
       insertPinsToPage(filteredOffers);
-    }, 500);
+    }, PIN_TIMEOUT);
 
 
   };

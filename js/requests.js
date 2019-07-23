@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var TIMEOUT = 10000;
   var loadURL = 'https://js.dump.academy/keksobooking/data';
   var uploadURL = 'https://js.dump.academy/keksobooking';
 
@@ -56,7 +57,7 @@
         onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
 
-      xhr.timeout = 10000;
+      xhr.timeout = TIMEOUT;
 
       xhr.open(type, url);
       xhr.send(data);

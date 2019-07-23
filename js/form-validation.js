@@ -1,14 +1,20 @@
 'use strict';
 
 (function () {
-  var housingType = document.querySelector('#type');
-  var pricePerNightInput = document.querySelector('#price');
   var minPrice = {
     BUNGALO: 0,
     FLAT: 1000,
     HOUSE: 5000,
     PALACE: 10000
-  }; // локальная
+  };
+  var RoomsAndGuests = {
+    1: [1],
+    2: [1, 2],
+    3: [1, 2, 3],
+    100: [0]
+  };
+  var housingType = document.querySelector('#type');
+  var pricePerNightInput = document.querySelector('#price');
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var adHeaderInput = document.querySelector('#title');
@@ -19,12 +25,6 @@
   var resetButton = adForm.querySelector('.ad-form__reset');
   var allInputs = adForm.querySelectorAll('input');
   var allSelects = adForm.querySelectorAll('select');
-  var RoomsAndGuests = {
-    1: [1],
-    2: [1, 2],
-    3: [1, 2, 3],
-    100: [0]
-  };
   var main = document.querySelector('main');
 
   var setAttributesOnPricePerNightInput = function () {
@@ -93,7 +93,8 @@
     }
   };
 
-  var resetButtonClickHandler = function () {
+  var resetButtonClickHandler = function (evt) {
+    evt.preventDefault();
     window.pageDeactivation.deactivatePage();
   };
 

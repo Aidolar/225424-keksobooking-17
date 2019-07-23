@@ -6,7 +6,7 @@
 
   var deactivatePage = function () {
 
-    window.pageActivation.blocksForms();
+    window.pageActivation.blocksAndUnblocksForms(true);
 
     // очищает текстовые инпуты и чекбоксы и убирает красные рамки
     window.formValidation.allInputs.forEach(function (item) {
