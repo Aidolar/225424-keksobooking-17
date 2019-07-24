@@ -2,6 +2,15 @@
 
 (function () {
   var TIMEOUT = 10000;
+  var CONTINUE_CODE = 100;
+  var PROCESSING_CODE = 102;
+  var OK_CODE = 200;
+  var NO_CONTENT_CODE = 204;
+  var BAD_REQUEST_CODE = 400;
+  var UNAUTHORIZED_CODE = 401;
+  var NOT_FOUND_CODE = 404;
+  var INTERNAL_SERVER_ERROR_CODE = 500;
+  var BAD_GATEWAY_CODE = 502;
   var loadURL = 'https://js.dump.academy/keksobooking/data';
   var uploadURL = 'https://js.dump.academy/keksobooking';
 
@@ -12,31 +21,31 @@
       xhr.addEventListener('load', function () {
         var errorMessage;
         switch (xhr.status) {
-          case 100:
+          case CONTINUE_CODE:
             errorMessage = 'Продолжай';
             break;
-          case 102:
+          case PROCESSING_CODE:
             errorMessage = 'Идёт обработка';
             break;
-          case 200:
+          case OK_CODE:
             onSuccess(xhr.response);
             break;
-          case 204:
+          case NO_CONTENT_CODE:
             errorMessage = 'Нет содержимого';
             break;
-          case 400:
+          case BAD_REQUEST_CODE:
             errorMessage = 'Неверный запрос';
             break;
-          case 401:
+          case UNAUTHORIZED_CODE:
             errorMessage = 'Пользователь не авторизован';
             break;
-          case 404:
+          case NOT_FOUND_CODE:
             errorMessage = 'Ничего не найдено';
             break;
-          case 500:
+          case INTERNAL_SERVER_ERROR_CODE:
             errorMessage = 'Внутренняя ошибка сервера';
             break;
-          case 502:
+          case BAD_GATEWAY_CODE:
             errorMessage = 'Ошибочный шлюз';
             break;
 

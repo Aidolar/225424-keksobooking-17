@@ -154,26 +154,36 @@
   capacity.addEventListener('change', capacityChangeHandler);
 
   adHeaderInput.addEventListener('invalid', function () {
-    if (adHeaderInput.validity.tooShort) {
-      adHeaderInput.setCustomValidity('Заголовок объявления должен содержать минимум 30 символов');
-    } else if (adHeaderInput.validity.tooLong) {
-      adHeaderInput.setCustomValidity('Заголовок объявления должен содержать максимум 100 символов');
-    } else if (adHeaderInput.validity.valueMissing) {
-      adHeaderInput.setCustomValidity('Обязательное поле');
-    } else {
-      adHeaderInput.setCustomValidity('');
+    switch (true) {
+      case adHeaderInput.validity.tooShort:
+        adHeaderInput.setCustomValidity('Заголовок объявления должен содержать минимум 30 символов');
+        break;
+      case adHeaderInput.validity.tooLong:
+        adHeaderInput.setCustomValidity('Заголовок объявления должен содержать максимум 100 символов');
+        break;
+      case adHeaderInput.validity.valueMissing:
+        adHeaderInput.setCustomValidity('Обязательное поле');
+        break;
+
+      default:
+        adHeaderInput.setCustomValidity('');
     }
   });
 
   pricePerNightInput.addEventListener('invalid', function () {
-    if (pricePerNightInput.validity.valueMissing) {
-      pricePerNightInput.setCustomValidity('Обязательное поле');
-    } else if (pricePerNightInput.validity.rangeUnderflow) {
-      pricePerNightInput.setCustomValidity('Указанная цена ниже минимально допустимой');
-    } else if (pricePerNightInput.validity.rangeOverflow) {
-      pricePerNightInput.setCustomValidity('Указанная цена выше максимально допустимой');
-    } else {
-      pricePerNightInput.setCustomValidity('');
+    switch (true) {
+      case pricePerNightInput.validity.valueMissing:
+        pricePerNightInput.setCustomValidity('Обязательное поле');
+        break;
+      case pricePerNightInput.validity.rangeUnderflow:
+        pricePerNightInput.setCustomValidity('Указанная цена ниже минимально допустимой');
+        break;
+      case pricePerNightInput.validity.rangeOverflow:
+        pricePerNightInput.setCustomValidity('Указанная цена выше максимально допустимой');
+        break;
+
+      default:
+        pricePerNightInput.setCustomValidity('');
     }
   });
 

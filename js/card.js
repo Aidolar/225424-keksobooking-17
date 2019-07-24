@@ -11,7 +11,7 @@
   };
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-  var getWordend = function (num, words) {
+  var getWordEnd = function (num, words) {
     if ((num % 100 > 10 && num % 100 < 15) || num % 10 > 4 || num % 10 === 0) {
       return words[2];
     } else if (num % 10 === 1) {
@@ -58,7 +58,7 @@
     }
 
     if (adObject.offer.rooms && adObject.offer.guests) {
-      card.querySelector('.popup__text--capacity').textContent = adObject.offer.rooms + ' ' + getWordend(adObject.offer.rooms, ['комната', 'комнаты', 'комнат']) + ' для ' + adObject.offer.guests + ' ' + getWordend(adObject.offer.guests, ['гостя', 'гостей', 'гостей']);
+      card.querySelector('.popup__text--capacity').textContent = adObject.offer.rooms + ' ' + getWordEnd(adObject.offer.rooms, ['комната', 'комнаты', 'комнат']) + ' для ' + adObject.offer.guests + ' ' + getWordEnd(adObject.offer.guests, ['гостя', 'гостей', 'гостей']);
     } else {
       card.querySelector('.popup__text--capacity').classList.add('hidden');
     }
